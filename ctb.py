@@ -3,7 +3,7 @@ from pygame.draw import *
 from random import randint
 pygame.init()
 
-FPS = 0.5
+FPS = 1
 screen = pygame.display.set_mode((1200, 900))
 
 RED = (255, 0, 0)
@@ -27,6 +27,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 finished = True
+                score_save(my_score)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 print('Cycle start!')
                 click(event)
@@ -40,6 +41,14 @@ def main():
     pygame.quit()
 
 
+def score_save(my_score):
+    """
+     give user name and save his name and score to ScoreTable.txt
+    """
+    username = input("insert your name")
+    print(username, "Game Over you have ", my_score, "points", )
+
+
 def new_ball():
     """
     drawing ball in random place,color and radius
@@ -51,7 +60,6 @@ def new_ball():
     r = randint(30, 50)
     color = COLORS[randint(0, 5)]
     circle(screen, color, (x, y), r)
-
 
 
 def click(event):
