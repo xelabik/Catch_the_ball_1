@@ -47,6 +47,10 @@ def score_save(my_score):
     """
     username = input("insert your name")
     print(username, "Game Over you have ", my_score, "points", )
+    outputfile = "ScoreTable.txt"
+    myfile = open(outputfile, mode="a")
+    myfile.write(username + "-" + str(my_score) + '\n')
+    myfile.close()
 
 
 def new_ball():
