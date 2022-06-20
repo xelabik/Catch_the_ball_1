@@ -1,4 +1,5 @@
 import pygame
+import math
 from pygame.draw import *
 from random import randint
 pygame.init()
@@ -79,7 +80,9 @@ def click(event):
     pty = abs(y_event - y)
     print("ptxpty", ptx, pty)
     flag = 0
-    if ptx < r and pty < r:
+    click_try = math.sqrt(ptx**2 + pty**2)
+    print("click_try", click_try)
+    if click_try < r:
         print("goool")
         flag = 1
         print("funkscore", flag)
