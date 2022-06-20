@@ -35,7 +35,7 @@ def main():
                 my_score += flag
                 print("score", my_score)
 
-        new_ball()
+        new_statick_ball()
         pygame.display.update()
         screen.fill(BLACK)
 
@@ -54,7 +54,7 @@ def score_save(my_score):
     myfile.close()
 
 
-def new_ball():
+def new_statick_ball():
     """
     drawing ball in random place,color and radius
     """
@@ -74,16 +74,16 @@ def click(event):
 
     global x_event, y_event, flag
     x_event, y_event = event.pos
-    print("ball xyr", x, y, r)
-    print("my event pos", x_event, y_event)
+    #  print("ball xyr", x, y, r)
+    #  print("my event pos", x_event, y_event)
     ptx = abs(x_event - x)
     pty = abs(y_event - y)
-    print("ptxpty", ptx, pty)
+    #  print("ptxpty", ptx, pty)
     flag = 0
     click_try = math.sqrt(ptx**2 + pty**2)
     print("click_try", click_try)
     if click_try < r:
-        print("goool")
+        print("goool-statick")
         flag = 1
         print("funkscore", flag)
     return flag
