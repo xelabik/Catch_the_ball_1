@@ -5,7 +5,10 @@ from random import randint
 pygame.init()
 
 FPS = 1
-screen = pygame.display.set_mode((1200, 900))
+
+screen_length = 1200
+screen_width = 900
+screen = pygame.display.set_mode((screen_length, screen_width))
 
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
@@ -15,9 +18,15 @@ MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
+runb_x = 600
+runb_y = 450
+runb_r = 50
+step_x = 33
+step_y = 33
 
 
 def main():
+    global runb_x, runb_y, runb_r, step_x, step_y
     pygame.display.update()
     clock = pygame.time.Clock()
     finished = False
@@ -36,6 +45,15 @@ def main():
                 print("score", my_score)
 
         new_statick_ball()
+
+        running_ball(runb_x, runb_y, runb_r)
+        if runb_x+runb_r > screen_length or runb_x-runb_r < 0:
+            step_x = -step_x
+        if runb_y + runb_r > screen_width or runb_y - runb_r < 0:
+            step_y = -step_y
+        runb_x += step_x
+        runb_y += step_y
+
         pygame.display.update()
         screen.fill(BLACK)
 
@@ -65,6 +83,16 @@ def new_statick_ball():
     r = randint(30, 50)
     color = COLORS[randint(0, 5)]
     circle(screen, color, (x, y), r)
+
+
+def running_ball(runb_x, runb_y, runb_r):
+    """
+    drawing ball that change your color and position
+    coordinate: runb_x, runb_y.
+    Radius: runb_r
+    """
+    color = COLORS[randint(0, 5)]
+    circle(screen, color, (runb_x, runb_y), runb_r)
 
 
 def click(event):
