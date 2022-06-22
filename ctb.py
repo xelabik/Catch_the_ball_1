@@ -41,18 +41,19 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 print('Cycle start!')
                 click(event)
-                my_score += flag
+                my_score += flag_statball
+                my_score += flag_runball
                 print("score", my_score)
 
         new_statick_ball()
 
-        running_ball(runb_x, runb_y, runb_r)
         if runb_x+runb_r > screen_length or runb_x-runb_r < 0:
             step_x = -step_x
         if runb_y + runb_r > screen_width or runb_y - runb_r < 0:
             step_y = -step_y
         runb_x += step_x
         runb_y += step_y
+        running_ball(runb_x, runb_y, runb_r)
 
         pygame.display.update()
         screen.fill(BLACK)
@@ -91,8 +92,8 @@ def running_ball(runb_x, runb_y, runb_r):
     coordinate: runb_x, runb_y.
     Radius: runb_r
     """
-    color = COLORS[randint(0, 5)]
-    circle(screen, color, (runb_x, runb_y), runb_r)
+    #color = COLORS[randint(0, 5)]
+    circle(screen, (50, 50, 50), (runb_x, runb_y), runb_r)
 
 
 def click(event):
@@ -100,21 +101,26 @@ def click(event):
     check if user hit the ball
     """
 
-    global x_event, y_event, flag
+    global x_event, y_event, flag_statball, flag_runball
     x_event, y_event = event.pos
-    #  print("ball xyr", x, y, r)
-    #  print("my event pos", x_event, y_event)
+
+    """ cheking hit the statick ball  """
     ptx = abs(x_event - x)
     pty = abs(y_event - y)
-    #  print("ptxpty", ptx, pty)
-    flag = 0
-    click_try = math.sqrt(ptx**2 + pty**2)
-    print("click_try", click_try)
+    click_try = math.sqrt(ptx ** 2 + pty ** 2)
+    flag_statball = 0
     if click_try < r:
-        print("goool-statick")
-        flag = 1
-        print("funkscore", flag)
-    return flag
+        flag_statball = 1
+
+    """ cheking hit the running ball """
+    dtx = abs(x_event - runb_x)
+    dty = abs(y_event - runb_y)
+    click_try_runb = math.sqrt(dtx ** 2 + dty ** 2)
+    flag_runball = 0
+    if click_try_runb < runb_r:
+        flag_runball = 2
+    print("statick run", flag_statball, flag_runball)
+    return flag_statball, flag_runball
 
 
 main()
