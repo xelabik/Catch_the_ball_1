@@ -18,15 +18,16 @@ MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
+""" running ball parameters"""
 runb_x = 600
 runb_y = 450
 runb_r = 50
-step_x = 33
-step_y = 33
+step_x = 40
+step_y = 40
 
 
 def main():
-    global runb_x, runb_y, runb_r, step_x, step_y
+    # global runb_x, runb_y, runb_r, step_x, step_y
     pygame.display.update()
     clock = pygame.time.Clock()
     finished = False
@@ -34,6 +35,7 @@ def main():
 
     while not finished:
         clock.tick(FPS)
+        """ mouse click and score"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 finished = True
@@ -45,15 +47,11 @@ def main():
                 my_score += flag_runball
                 print("score", my_score)
 
+        """ statick ball"""
         new_statick_ball()
 
-        if runb_x+runb_r > screen_length or runb_x-runb_r < 0:
-            step_x = -step_x
-        if runb_y + runb_r > screen_width or runb_y - runb_r < 0:
-            step_y = -step_y
-        runb_x += step_x
-        runb_y += step_y
-        running_ball(runb_x, runb_y, runb_r)
+        """ running_ball"""
+        running_ball()
 
         pygame.display.update()
         screen.fill(BLACK)
@@ -86,13 +84,19 @@ def new_statick_ball():
     circle(screen, color, (x, y), r)
 
 
-def running_ball(runb_x, runb_y, runb_r):
+def running_ball():
     """
-    drawing ball that change your color and position
+    drawing ball that change his position
     coordinate: runb_x, runb_y.
     Radius: runb_r
     """
-    #color = COLORS[randint(0, 5)]
+    global runb_x, runb_y, runb_r, step_x, step_y
+    if runb_x + runb_r > screen_length or runb_x - runb_r < 0:
+        step_x = -step_x
+    if runb_y + runb_r > screen_width or runb_y - runb_r < 0:
+        step_y = -step_y
+    runb_x += step_x
+    runb_y += step_y
     circle(screen, (50, 50, 50), (runb_x, runb_y), runb_r)
 
 
