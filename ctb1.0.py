@@ -20,12 +20,19 @@ BLACK = (0, 0, 0)
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
 """ running ball parameters"""
-runb_x = 600
-runb_y = 450
-runb_r = 50
-step_x = 2
-step_y = 2
+runb_x1 = 600
+runb_y1 = 450
+runb_r1 = 50
 
+runb_x2 = 600
+runb_y2 = 450
+runb_r2 = 50
+
+step_x1 = 2
+step_y1 = 2
+
+step_x2 = 2
+step_y2 = 2
 
 def main():
     global runball_color, FPS
@@ -45,13 +52,14 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 print('Cycle start!')
                 click(event)
-                my_score += flag_runball
+                my_score += flag_runball1
+                my_score += flag_runball2
                 print("score", my_score)
 
-        """ statick ball"""
-
-        """ running_ball"""
-        running_ball()
+        """ first running_ball """
+        first_running_ball()
+        """ second running_ball """
+        second_running_ball()
 
         pygame.display.update()
         screen.fill(BLACK)
@@ -71,64 +79,81 @@ def score_save(my_score):
     myfile.close()
 
 
-def new_statick_ball():
+def first_running_ball():
     """
-    drawing ball in random place,color and radius
+    drawing ball that change his position
+    coordinate: runb_x1, runb_y1.
+    Radius: runb_r1
     """
+    global runb_x1, runb_y1, runb_r1, step_x1, step_y1, color_flag, runball_color1
 
-    global x, y, r
-    x = randint(100, 700)
-    y = randint(100, 500)
-    r = randint(30, 50)
-    color = COLORS[randint(0, 5)]
-    circle(screen, color, (x, y), r)
+    if runb_x1 + runb_r1 > screen_length or runb_x1 - runb_r1 < 0:
+        step_x1 = -step_x1
+    if runb_y1 + runb_r1 > screen_width or runb_y1 - runb_r1 < 0:
+        step_y1 = -step_y1
+    runb_x1 += step_x1
+    runb_y1 += step_y1
+    circle(screen, runball_color, (runb_x1, runb_y1), runb_r1)
 
 
-def running_ball():
+def second_running_ball():
     """
     drawing ball that change his position
     coordinate: runb_x, runb_y.
     Radius: runb_r
     """
-    global runb_x, runb_y, runb_r, step_x, step_y, color_flag, runball_color
+    global runb_x2, runb_y2, runb_r2, step_x2, step_y2, color_flag, runball_color2
 
-    if runb_x + runb_r > screen_length or runb_x - runb_r < 0:
-        step_x = -step_x
-    if runb_y + runb_r > screen_width or runb_y - runb_r < 0:
-        step_y = -step_y
-    runb_x += step_x
-    runb_y += step_y
-    circle(screen, runball_color, (runb_x, runb_y), runb_r)
+    if runb_x2 + runb_r2  > screen_length or runb_x2 - runb_r2 < 0:
+        step_x2 = -step_x2
+    if runb_y2 + runb_r2 > screen_width or runb_y2 - runb_r2 < 0:
+        step_y2 = -step_y2
+    runb_x2 -= step_x2
+    runb_y2 -= step_y2
+    circle(screen, runball_color, (runb_x2, runb_y2), runb_r2)
 
 
 def click(event):
     """
     check if user hit the ball
     """
-
-    global x_event, y_event, flag_runball, color_flag, runb_x, runb_y, runb_r,\
-           runball_color, FPS, step_x, step_y
+    global x_event, y_event, color_flag, \
+           runb_x1, runb_y1, runb_r1, runball_color1, flag_runball1, step_x1, step_y1, \
+           runb_x2, runb_y2, runb_r2, runball_color2, flag_runball2, step_x2, step_y2,\
+           FPS
 
     x_event, y_event = event.pos
 
-    """ cheking hit the running ball """
-    dtx = abs(x_event - runb_x)
-    dty = abs(y_event - runb_y)
-    click_try_runb = math.sqrt(dtx ** 2 + dty ** 2)
-    flag_runball = 0
-    if click_try_runb < runb_r:
-        flag_runball = 1
-        color_flag = 1
-        runb_x = randint(50, 1150)
-        runb_y = randint(50, 850)
-        runb_r = randint(15, 49)
-        runball_color = COLORS[randint(0, 5)]
+    """ cheking hit the first running ball """
+    dtx1 = abs(x_event - runb_x1)
+    dty1 = abs(y_event - runb_y1)
+    click_try_runb1 = math.sqrt(dtx1 ** 2 + dty1 ** 2)
+    flag_runball1 = 0
+    if click_try_runb1 < runb_r1:
+        flag_runball1 = 1
+        runb_x1 = randint(50, 1150)
+        runb_y1 = randint(50, 850)
+        runb_r1 = randint(15, 49)
+        runball_color1 = COLORS[randint(0, 5)]
         FPS += 10
-        step_x += 1
-        step_y += 1
-        print("FPS", FPS, step_x, step_y)
-    print(" run_flag ", flag_runball)
-    return flag_runball
+        step_x1 += 1
+        step_y1 += 1
+
+    """ cheking hit the second running ball """
+    dtx2 = abs(x_event - runb_x2)
+    dty2 = abs(y_event - runb_y2)
+    click_try_runb2 = math.sqrt(dtx2 ** 2 + dty2 ** 2)
+    flag_runball2 = 0
+    if click_try_runb2 < runb_r2:
+        flag_runball2 = 1
+        runb_x2 = randint(50, 1150)
+        runb_y2 = randint(50, 850)
+        runb_r2 = randint(15, 49)
+        runball_color2 = COLORS[randint(0, 5)]
+        FPS += 10
+        step_x2 -= 1
+        step_y2 -= 1
+    return flag_runball1, flag_runball2
 
 
 main()
