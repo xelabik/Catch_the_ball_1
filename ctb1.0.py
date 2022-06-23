@@ -4,7 +4,7 @@ from pygame.draw import *
 from random import randint
 pygame.init()
 
-FPS = 25
+FPS = 60
 
 screen_length = 1200
 screen_width = 900
@@ -28,7 +28,7 @@ step_y = 2
 
 
 def main():
-    global runball_color
+    global runball_color, FPS
     pygame.display.update()
     clock = pygame.time.Clock()
     finished = False
@@ -106,7 +106,9 @@ def click(event):
     check if user hit the ball
     """
 
-    global x_event, y_event, flag_runball, color_flag, runb_x, runb_y, runb_r, runball_color
+    global x_event, y_event, flag_runball, color_flag, runb_x, runb_y, runb_r,\
+           runball_color, FPS, step_x, step_y
+
     x_event, y_event = event.pos
 
     """ cheking hit the running ball """
@@ -121,6 +123,10 @@ def click(event):
         runb_y = randint(50, 850)
         runb_r = randint(15, 49)
         runball_color = COLORS[randint(0, 5)]
+        FPS += 10
+        step_x += 1
+        step_y += 1
+        print("FPS", FPS, step_x, step_y)
     print(" run_flag ", flag_runball)
     return flag_runball
 
