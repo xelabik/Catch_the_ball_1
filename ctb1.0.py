@@ -2,6 +2,7 @@ import pygame
 import math
 from pygame.draw import *
 from random import randint
+
 pygame.init()
 
 FPS = 60
@@ -34,13 +35,20 @@ step_y1 = 2
 step_x2 = 2
 step_y2 = 2
 
+rect_x1 = -200
+rect_y1 = randint(100, 800)
+
+rect_x2 = randint(100, 1100)
+rect_y2 = -200
+
 def main():
-    global runball_color, FPS
+    global runball_color1, runball_color2, FPS
     pygame.display.update()
     clock = pygame.time.Clock()
     finished = False
     my_score = 0
-    runball_color = COLORS[randint(0, 5)]
+    runball_color1 = COLORS[randint(0, 5)]
+    runball_color2 = COLORS[randint(0, 5)]
 
     while not finished:
         clock.tick(FPS)
@@ -60,6 +68,8 @@ def main():
         first_running_ball()
         """ second running_ball """
         second_running_ball()
+
+        rectangles_cross()
 
         pygame.display.update()
         screen.fill(BLACK)
@@ -85,7 +95,7 @@ def first_running_ball():
     coordinate: runb_x1, runb_y1.
     Radius: runb_r1
     """
-    global runb_x1, runb_y1, runb_r1, step_x1, step_y1, color_flag, runball_color1
+    global runb_x1, runb_y1, runb_r1, step_x1, step_y1
 
     if runb_x1 + runb_r1 > screen_length or runb_x1 - runb_r1 < 0:
         step_x1 = -step_x1
@@ -93,7 +103,7 @@ def first_running_ball():
         step_y1 = -step_y1
     runb_x1 += step_x1
     runb_y1 += step_y1
-    circle(screen, runball_color, (runb_x1, runb_y1), runb_r1)
+    circle(screen, runball_color1, (runb_x1, runb_y1), runb_r1)
 
 
 def second_running_ball():
@@ -102,25 +112,38 @@ def second_running_ball():
     coordinate: runb_x, runb_y.
     Radius: runb_r
     """
-    global runb_x2, runb_y2, runb_r2, step_x2, step_y2, color_flag, runball_color2
+    global runb_x2, runb_y2, runb_r2, step_x2, step_y2
 
-    if runb_x2 + runb_r2  > screen_length or runb_x2 - runb_r2 < 0:
+    if runb_x2 + runb_r2 > screen_length or runb_x2 - runb_r2 < 0:
         step_x2 = -step_x2
     if runb_y2 + runb_r2 > screen_width or runb_y2 - runb_r2 < 0:
         step_y2 = -step_y2
     runb_x2 -= step_x2
     runb_y2 -= step_y2
-    circle(screen, runball_color, (runb_x2, runb_y2), runb_r2)
+    circle(screen, runball_color2, (runb_x2, runb_y2), runb_r2)
+
+
+def rectangles_cross():
+    """
+    drawing two rectangles
+    firs rectangle coordinate: rect_x1, rect_y1
+    second rectangle coordinate: rect_x2, rect_y2
+
+    """
+    global rect_x1, rect_y1, rect_x2, rect_y2
+
+    rect(screen, (255, 255, 255), (rect_x1, rect_y1, 100, 50))
+    rect_x1 += FPS/3
 
 
 def click(event):
     """
     check if user hit the ball
     """
-    global x_event, y_event, color_flag, \
-           runb_x1, runb_y1, runb_r1, runball_color1, flag_runball1, step_x1, step_y1, \
-           runb_x2, runb_y2, runb_r2, runball_color2, flag_runball2, step_x2, step_y2,\
-           FPS
+    global x_event, y_event, \
+        runb_x1, runb_y1, runb_r1, runball_color1, flag_runball1, step_x1, step_y1, \
+        runb_x2, runb_y2, runb_r2, runball_color2, flag_runball2, step_x2, step_y2, \
+        FPS
 
     x_event, y_event = event.pos
 
@@ -157,4 +180,3 @@ def click(event):
 
 
 main()
-
