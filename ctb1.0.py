@@ -35,11 +35,12 @@ step_y1 = 2
 step_x2 = 2
 step_y2 = 2
 
-rect_x1 = -200
+rect_x1 = -1200
 rect_y1 = randint(100, 800)
 
 rect_x2 = randint(100, 1100)
-rect_y2 = -200
+rect_y2 = -1200
+
 
 def main():
     global runball_color1, runball_color2, FPS
@@ -58,18 +59,22 @@ def main():
                 finished = True
                 score_save(my_score)
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                print('Cycle start!')
                 click(event)
                 my_score += flag_runball1
                 my_score += flag_runball2
-                print("score", my_score)
+                my_score += flag_rectangles_cross1
+                my_score += flag_rectangles_cross2
+                print("score", my_score, "FPS", FPS)
 
         """ first running_ball """
         first_running_ball()
+
         """ second running_ball """
         second_running_ball()
 
-        rectangles_cross()
+        """rectangles_cross"""
+        if FPS % 200 == 0:
+            rectangles_cross()
 
         pygame.display.update()
         screen.fill(BLACK)
@@ -131,9 +136,16 @@ def rectangles_cross():
 
     """
     global rect_x1, rect_y1, rect_x2, rect_y2
+    print("eeeeeee")
+    """horizontal rectangle """
+    rect(screen, (255, 255, 255), (rect_x1, rect_y1, 400, 50))
+    rect_x1 += 4
 
-    rect(screen, (255, 255, 255), (rect_x1, rect_y1, 100, 50))
-    rect_x1 += FPS/3
+    """vertical rectangle """
+    rect(screen, (255, 255, 255), (rect_x2, rect_y2, 50, 400))
+    rect_y2 += 4
+    print(rect_x1, rect_y1)
+    print(rect_x2, rect_y2)
 
 
 def click(event):
@@ -143,7 +155,7 @@ def click(event):
     global x_event, y_event, \
         runb_x1, runb_y1, runb_r1, runball_color1, flag_runball1, step_x1, step_y1, \
         runb_x2, runb_y2, runb_r2, runball_color2, flag_runball2, step_x2, step_y2, \
-        FPS
+        FPS, flag_rectangles_cross1, flag_rectangles_cross2
 
     x_event, y_event = event.pos
 
@@ -156,7 +168,7 @@ def click(event):
         flag_runball1 = 1
         runb_x1 = randint(50, 1150)
         runb_y1 = randint(50, 850)
-        runb_r1 = randint(15, 49)
+        runb_r1 = randint(25, 49)
         runball_color1 = COLORS[randint(0, 5)]
         FPS += 10
         step_x1 += 1
@@ -171,12 +183,29 @@ def click(event):
         flag_runball2 = 1
         runb_x2 = randint(50, 1150)
         runb_y2 = randint(50, 850)
-        runb_r2 = randint(15, 49)
+        runb_r2 = randint(25, 49)
         runball_color2 = COLORS[randint(0, 5)]
         FPS += 10
         step_x2 -= 1
         step_y2 -= 1
-    return flag_runball1, flag_runball2
+
+    """ cheking hit the rectangles_cross """
+    flag_rectangles_cross1 = 0
+    if rect_x1 < x_event < rect_x1 + 400 and \
+       rect_y1 < y_event < rect_y1 + 50:
+        FPS -= 100
+        flag_rectangles_cross1 = 1
+
+    flag_rectangles_cross2 = 0
+    if rect_x2 < x_event < rect_x2 + 50 and \
+       rect_y2 < y_event < rect_y2 + 400:
+        FPS -= 100
+        flag_rectangles_cross2 = 1
+
+    print("step_x1 step_y1", step_x1, step_y1)
+    print("step_x2 step_y2", step_x2, step_y2)
+    return flag_runball1, flag_runball2,\
+        flag_rectangles_cross1, flag_rectangles_cross2
 
 
 main()
