@@ -73,7 +73,7 @@ def score_save(my_score):
 
 def new_statick_ball():
     """
-    drawing ball in random place,color and radius
+    Drawing ball in random place,color and radius
     """
 
     global x, y, r
