@@ -112,7 +112,6 @@ def on_click(event: pygame.event.Event) -> Tuple[bool]:
 
     Args:
         event (pygame.event.Event): _description_
-
     Returns:
         Tuple[bool]: _description_
     """

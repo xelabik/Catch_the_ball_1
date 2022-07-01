@@ -13,21 +13,18 @@ Args:
 {{/kwargs}}
 {{/parametersExist}}
 {{#exceptionsExist}}
-
 Raises:
 {{#exceptions}}
     {{type}}: {{descriptionPlaceholder}}
 {{/exceptions}}
 {{/exceptionsExist}}
 {{#returnsExist}}
-
 Returns:
 {{#returns}}
     {{typePlaceholder}}: {{descriptionPlaceholder}}
 {{/returns}}
 {{/returnsExist}}
 {{#yieldsExist}}
-
 Yields:
 {{#yields}}
     {{typePlaceholder}}: {{descriptionPlaceholder}}
