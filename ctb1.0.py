@@ -40,14 +40,15 @@ rect_y1 = randint(100, 800)
 
 rect_x2 = randint(100, 1100)
 rect_y2 = -1200
+OUTPUT_RESULTS_FILE = "ScoreTable.txt"
 
 
 def main():
-    global runball_color1, runball_color2, FPS
+    global rect_x1, rect_y2, runball_color1, runball_color2, FPS
     pygame.display.update()
     clock = pygame.time.Clock()
     finished = False
-    my_score = 0
+    score = 0
     runball_color1 = COLORS[randint(0, 5)]
     runball_color2 = COLORS[randint(0, 5)]
 
@@ -57,14 +58,17 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 finished = True
-                score_save(my_score)
+                save_score(score, file_to_save=OUTPUT_RESULTS_FILE)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 click(event)
-                my_score += flag_runball1
-                my_score += flag_runball2
-                my_score += flag_rectangles_cross1
-                my_score += flag_rectangles_cross2
-                print("score", my_score, "FPS", FPS)
+                score += flag_runball1
+                score += flag_runball2
+                score += flag_rectangles_cross1
+                score += flag_rectangles_cross2
+                if flag_rectangles_cross1 or flag_rectangles_cross2:
+                    rect_x1 = -1200
+                    rect_y2 = -1200
+                print("score", score, "FPS", FPS)
 
         """ first running_ball """
         first_running_ball()
@@ -82,16 +86,18 @@ def main():
     pygame.quit()
 
 
-def score_save(my_score):
+def save_score(score: int, file_to_save: str) -> None:
     """
-     give user name and save his name and score to ScoreTable.txt
+    Save thr given score.
+
+    Args:
+        score (int) : the score to save
+        file_to_save (str): the file to save the score
     """
     username = input("insert your name")
-    print(username, "Game Over you have ", my_score, "points", )
-    outputfile = "ScoreTable.txt"
-    myfile = open(outputfile, mode="a")
-    myfile.write(username + "-" + str(my_score) + '\n')
-    myfile.close()
+    print(f"{username} Game Over you have {score} points")
+    with open(file_to_save, "a") as file:
+        file.write(username + "-" + str(score) + '\n')
 
 
 def first_running_ball():
@@ -135,9 +141,9 @@ def rectangles_cross():
     second rectangle coordinate: rect_x2, rect_y2
 
     """
-    global rect_x1, rect_y1, rect_x2, rect_y2
+    global rect_x2, rect_y2, rect_x1
     print("eeeeeee")
-    """horizontal rectangle """
+    """horizontal rectangle !!"""
     rect(screen, (255, 255, 255), (rect_x1, rect_y1, 400, 50))
     rect_x1 += 4
 
